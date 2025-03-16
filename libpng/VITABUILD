@@ -1,0 +1,18 @@
+pkgname=libpng
+pkgver=1.6.43
+pkgrel=1
+url="http://www.libpng.org/pub/png/libpng.html"
+source=("git+https://git.code.sf.net/p/libpng/code#tag=v$pkgver")
+sha256sums=('SKIP')
+depends=('zlib')
+
+build() {
+  cd code
+  ./configure --host=arm-vita-eabi --prefix=$prefix --disable-shared --enable-static --enable-arm-neon
+  make -j$(nproc)
+}
+
+package () {
+  cd code
+  make DESTDIR=$pkgdir install
+}

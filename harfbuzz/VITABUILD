@@ -1,0 +1,18 @@
+pkgname=harfbuzz
+pkgver=9.0.0
+pkgrel=1
+url="https://harfbuzz.github.io/"
+source=("https://github.com/harfbuzz/harfbuzz/releases/download/${pkgver}/harfbuzz-${pkgver}.tar.xz")
+sha256sums=('a41b272ceeb920c57263ec851604542d9ec85ee3030506d94662067c7b6ab89e')
+
+build() {
+  cd harfbuzz-$pkgver
+  mkdir build && cd build
+  cmake .. -DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_BUILD_TYPE=Release
+  make -j$(nproc)
+}
+
+package () {
+  cd harfbuzz-$pkgver/build
+  make DESTDIR=$pkgdir install
+}

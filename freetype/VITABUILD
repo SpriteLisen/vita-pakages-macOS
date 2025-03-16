@@ -1,0 +1,19 @@
+pkgname=freetype
+pkgver=2.13.2
+pkgrel=1
+url="https://freetype.org/"
+source=("https://download-mirror.savannah.gnu.org/releases/freetype/freetype-${pkgver}.tar.gz")
+sha256sums=('1ac27e16c134a7f2ccea177faba19801131116fd682efc1f5737037c5db224b5')
+depends=('bzip2 libpng zlib')
+
+build() {
+  cd freetype-$pkgver
+  mkdir build && cd build
+  cmake .. -DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$prefix -DBUILD_SHARED_LIBS=OFF -DFT_DISABLE_HARFBUZZ=TRUE
+  make -j$(nproc)
+}
+
+package () {
+  cd freetype-$pkgver/build
+  make DESTDIR=$pkgdir install
+}
