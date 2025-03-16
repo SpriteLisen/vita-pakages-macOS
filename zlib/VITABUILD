@@ -1,0 +1,17 @@
+pkgname=zlib
+pkgver=1.3.1
+pkgrel=1
+url="https://www.zlib.net/"
+source=("https://www.zlib.net/fossils/zlib-${pkgver}.tar.gz")
+sha256sums=('9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23')
+
+build() {
+  cd zlib-$pkgver
+  ./configure --prefix=$prefix
+  make -j$(nproc)
+}
+
+package () {
+  cd zlib-$pkgver
+  make DESTDIR=$pkgdir install
+}
